@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import useAuth from '../hooks/AuthProvider';
+
+import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import './Header.css';
 const Header = () => {
     const { user, logout } = useAuth();
@@ -14,26 +17,37 @@ const Header = () => {
 
                     <ul className="navbar-nav mx-auto mt-2 mt-lg-0">
                         <li className="nav-item">
-                            <Link to="/home">Home</Link>
+                            <Link to="/home"> <FontAwesomeIcon icon={faHome} />  Home</Link>
                         </li>
+
                         <li className="nav-item">
-                            <Link to="/shipping">Shipping</Link>
+                            <Link to="/about">About</Link>
                         </li>
+
+                        {!user?.email &&
+                            <li className="nav-item">
+                                <Link to="/register">Register</Link>
+                            </li>
+                        }
+
+                        {!user?.email &&
+                            <li className="nav-item">
+                                <Link to="/login">Login</Link>
+                            </li>
+                        }
                         <li className="nav-item">
-                            <Link to="/placeorder">PlaceOrder</Link>
+                            <Link to="/profile">Profile</Link>
                         </li>
-                        <li className="nav-item">
-                            <Link to="/register">Register</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link to="/login">Login</Link>
-                        </li>
-                        <li className="nav-item">
-                            <span> {user.email} </span>
-                        </li>
-                        <li className="nav-item">
-                            {user?.email && <button onClick={logout}>Log Out</button>}
-                        </li>
+                        {user?.email &&
+                            <li className="nav-item">
+                                <span className="text-primary">{user.displayName}</span>
+                            </li>
+                        }
+                        {user?.email &&
+                            <li className="nav-item">
+                                <button onClick={logout} className="btn-small btn-primary" style={{ marginLeft: "10px" }}>Log Out</button>
+                            </li>
+                        }
                     </ul>
                 </div>
             </nav>

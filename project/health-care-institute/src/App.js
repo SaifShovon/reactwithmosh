@@ -1,16 +1,28 @@
 import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css'
 import Home from './components/Home/Home';
 import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import Header from './components/Header/Header';
 import AuthProvider from './components/context/AuthProvider';
-import Shipping from './components/Shipping/Shipping';
 import PrivetRoute from './components/PrivetRoute/PrivetRoute';
-import PlaceOrder from './components/PlaceOrder/PlaceOrder';
+import About from './components/About/About';
+import Footer from './components/Footer/Footer';
+import ServiceDetails from './components/Services/ServiceDetails';
+import Profile from './components/Profile/Profile';
+import NotFound from './components/NotFound/NotFound';
+import { useState, useEffect } from 'react';
 
 function App() {
+  const [services, setServices] = useState([]);
+  console.log(services);
+  useEffect(() => {
+    fetch('services_api.JSON')
+      .then(res => res.json())
+      .then(data => setServices(data));
+  }, []);
   return (
     <div className="App">
       <AuthProvider>
@@ -18,10 +30,10 @@ function App() {
           <Header></Header>
           <Switch>
             <Route exact path="/">
-              <Home></Home>
+              <Home all_service={services}></Home>
             </Route>
             <Route path="/home">
-              <Home></Home>
+              <Home all_service={services}></Home>
             </Route>
             <Route path="/login">
               <Login></Login>
@@ -29,13 +41,20 @@ function App() {
             <Route path="/register">
               <Register></Register>
             </Route>
-            <PrivetRoute path="/shipping">
-              <Shipping></Shipping>
+            <Route path="/about">
+              <About all_service={services}></About>
+            </Route>
+            <Route path="/service/:service_id">
+              <ServiceDetails all_service={services} ></ServiceDetails>
+            </Route>
+            <PrivetRoute path="/profile">
+              <Profile></Profile>
             </PrivetRoute>
-            <PrivetRoute path="/placeorder">
-              <PlaceOrder></PlaceOrder>
-            </PrivetRoute>
+            <Route>
+              <NotFound></NotFound>
+            </Route>
           </Switch>
+          <Footer></Footer>
         </BrowserRouter>
       </AuthProvider>
     </div>

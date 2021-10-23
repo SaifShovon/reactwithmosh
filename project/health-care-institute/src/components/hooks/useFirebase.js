@@ -1,17 +1,16 @@
 import { useState, useEffect } from "react"
 import initializeAuthentication from "../Firebase/firebase.init";
-import { getAuth, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signOut, GithubAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signOut, sendEmailVerification, sendPasswordResetEmail, updateProfile } from "firebase/auth";
 initializeAuthentication();
 const useFirebase = () => {
     const [user, setUser] = useState({});
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
     const auth = getAuth();
     const googleProvider = new GoogleAuthProvider();
-    const githubProvider = new GithubAuthProvider();
 
     const signInUsigEmailAndPass = (email, password) => {
+        setIsLoading(true);
         console.log('fuction call');
         console.log(email);
         console.log(password);
@@ -22,9 +21,11 @@ const useFirebase = () => {
             })
             .catch((error) => {
                 setError(error.message);
-            });
+            })
+            .finally(() => setIsLoading(false));
     }
-    const signUpUsigEmailAndPass = (email, password) => {
+    const signUpUsigEmailAndPass = (email, password, name) => {
+        setIsLoading(true);
         console.log('fuction call');
         console.log(email);
         console.log(password);
@@ -32,12 +33,18 @@ const useFirebase = () => {
             .then((result) => {
                 console.log(result.user);
                 setUser(result.user);
+                verifyEmail();
+                setUserName(name);
+                console.log(user)
+                setError('');
             })
             .catch((error) => {
                 setError(error.message);
-            });
+            })
+            .finally(() => setIsLoading(false));
     }
     const signInUsigGoogle = () => {
+        setIsLoading(true)
         signInWithPopup(auth, googleProvider)
             .then(result => {
                 console.log(result.user);
@@ -48,11 +55,29 @@ const useFirebase = () => {
             })
     }
 
-    const signInUsigGithub = () => {
-        signInWithPopup(auth, githubProvider)
+
+    const setUserName = (name) => {
+        updateProfile(auth.currentUser, { displayName: name })
             .then(result => {
-                console.log(result.user);
-                setUser(result.user);
+                console.log(result);
+            })
+            .catch(error => {
+                setError(error.message);
+            })
+    }
+    const verifyEmail = () => {
+        sendEmailVerification(auth.currentUser)
+            .then(result => {
+                console.log(result);
+            })
+            .catch(error => {
+                setError(error.message);
+            })
+    }
+    const handleResetPassword = (email) => {
+        sendPasswordResetEmail(auth, email)
+            .then(result => {
+                console.log(result);
             })
             .catch(error => {
                 setError(error.message);
@@ -72,6 +97,10 @@ const useFirebase = () => {
                 console.log("Inside State Change", user);
                 setUser(user);
             }
+            else {
+                setUser({})
+            }
+            setIsLoading(false)
         })
     }, []);
     return {
@@ -81,7 +110,9 @@ const useFirebase = () => {
         signUpUsigEmailAndPass,
         signInUsigGoogle,
         logout,
-        signInUsigGithub
+        handleResetPassword,
+        isLoading,
+        setUserName
     }
 }
 
