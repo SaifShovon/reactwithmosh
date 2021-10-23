@@ -6,9 +6,9 @@ const About = (props) => {
     return (
         <div>
             <h3 className="bg-secondary py-3">About Us</h3>
-            <Card className="text-center">
+            <Card className="text-center" >
                 {all_service.map(service =>
-                    <div>
+                    <div key={service.id}>
                         <Card.Header as="h3"> {service.short_description}</Card.Header>
                         <Card.Body>
                             <Card.Text>

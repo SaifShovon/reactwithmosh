@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -17,9 +16,8 @@ import { useState, useEffect } from 'react';
 
 function App() {
   const [services, setServices] = useState([]);
-  console.log(services);
   useEffect(() => {
-    fetch('services_api.JSON')
+    fetch('../../services_api.JSON')
       .then(res => res.json())
       .then(data => setServices(data));
   }, []);
@@ -44,7 +42,7 @@ function App() {
             <Route path="/about">
               <About all_service={services}></About>
             </Route>
-            <Route path="/service/:service_id">
+            <Route exact path="/service/:service_id">
               <ServiceDetails all_service={services} ></ServiceDetails>
             </Route>
             <PrivetRoute path="/profile">

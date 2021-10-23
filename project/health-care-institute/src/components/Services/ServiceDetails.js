@@ -11,7 +11,7 @@ const ServiceDetails = (props) => {
             <h3 className="bg-secondary py-3 my-3">Service Details</h3>
             {
 
-                props.all_service.filter(service => service.id == service_id).map(service =>
+                props.all_service.filter(service => service.id === parseInt(service_id)).map(service =>
                     <Row className="px-5 py-3" key={service.id}>
                         <Col className="col-md-12 col-sm-12 py-3"><Card className="text-center">
                             <Card.Header>{service.title}</Card.Header>

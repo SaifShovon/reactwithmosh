@@ -57,11 +57,11 @@ const Login = () => {
                         </div>
                     </div>
                     {errorMessage ?
-                        <div className="row mb-3 text-danger">{errorMessage}</div> : ''
+                        <div className="row mb-5  ml-5 text-danger">{errorMessage}</div> : ''
 
                     }
                     {error ?
-                        <div className="row mb-3 text-danger">{error}</div> : ''
+                        <div className="row mb-5  ml-5 text-danger">{error}</div> : ''
                     }
 
 

@@ -11,12 +11,8 @@ const useFirebase = () => {
 
     const signInUsigEmailAndPass = (email, password) => {
         setIsLoading(true);
-        console.log('fuction call');
-        console.log(email);
-        console.log(password);
         signInWithEmailAndPassword(auth, email, password)
             .then((result) => {
-                console.log(result.user);
                 setUser(result.user);
             })
             .catch((error) => {
@@ -31,11 +27,9 @@ const useFirebase = () => {
         console.log(password);
         createUserWithEmailAndPassword(auth, email, password)
             .then((result) => {
-                console.log(result.user);
                 setUser(result.user);
                 verifyEmail();
                 setUserName(name);
-                console.log(user)
                 setError('');
             })
             .catch((error) => {
@@ -47,7 +41,6 @@ const useFirebase = () => {
         setIsLoading(true)
         signInWithPopup(auth, googleProvider)
             .then(result => {
-                console.log(result.user);
                 setUser(result.user);
             })
             .catch(error => {
@@ -59,7 +52,7 @@ const useFirebase = () => {
     const setUserName = (name) => {
         updateProfile(auth.currentUser, { displayName: name })
             .then(result => {
-                console.log(result);
+                setError("Name Updated!!!");
             })
             .catch(error => {
                 setError(error.message);
@@ -68,7 +61,7 @@ const useFirebase = () => {
     const verifyEmail = () => {
         sendEmailVerification(auth.currentUser)
             .then(result => {
-                console.log(result);
+                setError("Email Sent for verification mail!!!");
             })
             .catch(error => {
                 setError(error.message);
@@ -77,7 +70,7 @@ const useFirebase = () => {
     const handleResetPassword = (email) => {
         sendPasswordResetEmail(auth, email)
             .then(result => {
-                console.log(result);
+                setError("Email Sent for password reset!!!");
             })
             .catch(error => {
                 setError(error.message);
@@ -94,7 +87,6 @@ const useFirebase = () => {
     useEffect(() => {
         onAuthStateChanged(auth, user => {
             if (user) {
-                console.log("Inside State Change", user);
                 setUser(user);
             }
             else {
@@ -102,7 +94,7 @@ const useFirebase = () => {
             }
             setIsLoading(false)
         })
-    }, []);
+    }, [auth]);
     return {
         user,
         error,
