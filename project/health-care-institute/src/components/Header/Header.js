@@ -21,7 +21,7 @@ const Header = () => {
                         </li>
 
                         <li className="nav-item">
-                            <Link to="/about">About</Link>
+                            <Link to="/about">About Us</Link>
                         </li>
 
                         {!user?.email &&
@@ -37,6 +37,9 @@ const Header = () => {
                         }
                         <li className="nav-item">
                             <Link to="/profile">Profile</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/myService">My Service</Link>
                         </li>
                         {user?.email &&
                             <li className="nav-item">

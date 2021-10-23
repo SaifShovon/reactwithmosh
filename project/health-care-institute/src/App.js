@@ -11,6 +11,7 @@ import About from './components/About/About';
 import Footer from './components/Footer/Footer';
 import ServiceDetails from './components/Services/ServiceDetails';
 import Profile from './components/Profile/Profile';
+import MyService from './components/MyService/MyService';
 import NotFound from './components/NotFound/NotFound';
 import { useState, useEffect } from 'react';
 
@@ -42,11 +43,14 @@ function App() {
             <Route path="/about">
               <About all_service={services}></About>
             </Route>
-            <Route exact path="/service/:service_id">
+            <PrivetRoute exact path="/service/:service_id">
               <ServiceDetails all_service={services} ></ServiceDetails>
-            </Route>
+            </PrivetRoute>
             <PrivetRoute path="/profile">
               <Profile></Profile>
+            </PrivetRoute>
+            <PrivetRoute path="/myService">
+              <MyService></MyService>
             </PrivetRoute>
             <Route>
               <NotFound></NotFound>
